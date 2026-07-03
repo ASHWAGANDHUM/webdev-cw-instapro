@@ -3,7 +3,7 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
-export function renderPostsPageComponent({ appEl }) {
+export function renderPostsPageComponent({ appEl, isUserPostsPage }) {
   const postsHtml = posts
     .map((post) => {
       const likeImage = post.isLiked
@@ -38,9 +38,14 @@ export function renderPostsPageComponent({ appEl }) {
     })
     .join("");
 
+  const userNameHtml = isUserPostsPage
+    ? `<h2 class="user-posts-header">Посты пользователя ${escapeHtml(posts[0].user.name)}</h2>`
+    : "";
+
   const appHtml = `
     <div class="page-container">
       <div class="header-container"></div>
+      ${userNameHtml}
       <ul class="posts">
         ${postsHtml}
       </ul>
