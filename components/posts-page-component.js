@@ -1,7 +1,8 @@
 import { escapeHtml } from "../helpers.js";
+import { toggleLike } from "../api.js";
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, user, getToken } from "../index.js";
 
 export function renderPostsPageComponent({ appEl, isUserPostsPage }) {
   const postsHtml = posts
@@ -62,6 +63,31 @@ export function renderPostsPageComponent({ appEl, isUserPostsPage }) {
       goToPage(USER_POSTS_PAGE, {
         userId: userEl.dataset.userId,
       });
+    });
+  }
+
+  for (let likeButton of document.querySelectorAll(".like-button")) {
+    likeButton.addEventListener("click", () => {
+      if (!user) {
+        return;
+      }
+
+      const postId = likeButton.dataset.postId;
+      const post = posts.find((post) => post.id === postId);
+
+      toggleLike({ postId, isLiked: post.isLiked, token: getToken() }).then(
+        () => {
+          post.isLiked = !post.isLiked;
+
+          if (post.isLiked) {
+            post.likes.push({ id: user._id, name: user.name });
+          } else {
+            post.likes = post.likes.filter((like) => like.id !== user._id);
+          }
+
+          renderPostsPageComponent({ appEl, isUserPostsPage });
+        },
+      );
     });
   }
 }
