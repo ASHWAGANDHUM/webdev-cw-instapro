@@ -38,6 +38,16 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     document.getElementById("add-button").addEventListener("click", () => {
       const description = document.getElementById("description-input").value;
 
+      if (!description.trim()) {
+        alert("Введите описание к посту");
+        return;
+      }
+
+      if (!imageUrl) {
+        alert("Загрузите фотографию");
+        return;
+      }
+
       onAddPostClick({
         description,
         imageUrl,
