@@ -1,3 +1,6 @@
+import { formatDistanceToNow } from "https://esm.sh/date-fns@2.29.3";
+import ru from "https://esm.sh/date-fns@2.29.3/locale/ru";
+
 export function saveUserToLocalStorage(user) {
   window.localStorage.setItem("user", JSON.stringify(user));
 }
@@ -21,4 +24,11 @@ export function escapeHtml(text) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+export function formatDate(isoDate) {
+  return formatDistanceToNow(new Date(isoDate), {
+    addSuffix: true,
+    locale: ru,
+  });
 }

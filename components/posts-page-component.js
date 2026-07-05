@@ -1,4 +1,4 @@
-import { escapeHtml } from "../helpers.js";
+import { escapeHtml, formatDate } from "../helpers.js";
 import { toggleLike } from "../api.js";
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
@@ -33,7 +33,7 @@ export function renderPostsPageComponent({ appEl, isUserPostsPage }) {
             ${escapeHtml(post.description)}
           </p>
           <p class="post-date">
-            ${new Date(post.createdAt).toLocaleString("ru-RU")}
+            ${formatDate(post.createdAt)}
           </p>
         </li>`;
     })
